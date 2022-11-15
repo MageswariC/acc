@@ -1,0 +1,23 @@
+// $breadcrumb-divider: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E");
+.bcrumb{
+    background: none;
+}
+.breadcrumb-item + .breadcrumb-item{
+    padding: 0;
+}
+.breadcrumb-item + .breadcrumb-item::before{
+    line-height: 1.6;
+    color:var(--breadcrumb);
+    content: ">";
+}
+.bcrumb {
+    li a{
+    text-decoration: none;
+    cursor: pointer;
+    color:var(--breadcrumb);
+    font-size: 14px;
+    }
+    li:last-child >a{
+        color:black
+    }
+}

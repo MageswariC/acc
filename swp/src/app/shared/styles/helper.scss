@@ -1,0 +1,53 @@
+@import 'variable.scss';
+.hypertext-border {
+    border-top: 2px solid var(--primary) !important;
+    opacity: inherit !important;
+    background-color: inherit !important;
+}
+
+.small-text {
+    font-size: 12px !important;
+}
+
+.card-link {
+    color: var(--primary) !important;
+}
+
+.anchor-link-without-underline {
+    text-decoration: none !important;
+}
+
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.bg-dark {
+    background-color: var(--text-primary) !important;
+}
+
+.f12 {
+    font-size: 12px;
+}
+
+.verticle-border-height {
+    height: 30px;
+}
+
+.f13 {
+    font-size: 13px;
+}
+
+.z-index-fixed {
+    z-index: 1030;
+}
+
+.button-success {
+    color: rgb(135, 227, 135) !important;
+    border: 1px solid rgb(135, 227, 135) !important;
+    font-size: 14px;
+}
+
+.xsmall-button {
+    font-size: 10px !important;
+    padding: 4px;
+}

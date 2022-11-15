@@ -1,0 +1,44 @@
+<!-- updated menu  -->
+<div class="menu-height">
+    <nav id="sidebar">
+        <ul class="list-unstyled components">
+            <li [ngClass]="{'active' : menus[i]}" *ngFor="let item of menusList; let i=index">
+                <a href="#{{item.title}}" data-toggle="collapse"  *ngIf="item.roleAssignee.includes(user)" [ngClass]="{'activeColor' :item.hasChild.length==0 && path.includes(item.route)}" [id]="'menuLink'+i" (click)="navmenuclick(item.route,item, [i])" [attr.aria-expanded]="menus[i]">
+                    <span><i *ngIf="item.hasChild.length>0" class="fa fa-caret-right" ></i></span><span tabindex="0">{{item.name}}</span>
+                </a>
+              
+                <ul class="collapse list-unstyled" id="{{item.title}}"  [ngClass]="{'show ': path.includes(item.route)}">
+                    <!-- {{path }} -->
+                    <!-- {{item |json}} -->
+                    <li *ngFor="let list of item.hasChild; let j=index" [ngClass]="{'active' : submenu[i+'.'+j]}">
+                        <a href="#{{list.title}}" data-toggle="collapse" *ngIf="list.roleAssignee.includes(user)"[ngClass]="{'activeColor' :list.hasChild.length==0}" [id]="'menuLink'+i+'.'+j" (click)="navmenuclick(list.route,list, [i, j])" [attr.aria-expanded]="submenu[i+'.'+j]">
+                            <span>  <i *ngIf="list.hasChild.length>0"  class="fa fa-caret-right" ></i></span><span tabindex="0">{{list.name}}</span>
+                        </a>
+                      
+                        <ul class="collapse list-unstyled " id="{{list.title}}" [ngClass]="{'show': path.includes(list.route)}">
+                            <li *ngFor="let nestedItem of list.hasChild;let k=index " [ngClass]="{'active' : nextedSubMenu[i+'.'+j+'.'+k]}">
+                                <a href="#{{nestedItem.title}}" *ngIf="nestedItem.roleAssignee.includes(user)" [ngClass]="{'activeColor' :nestedItem.hasChild.length==0}" [id]="'menuLink'+i+'.'+j+'.'+k" (click)="navmenuclick(nestedItem.route,nestedItem, [i, j, k])" data-toggle="collapse" [attr.aria-expanded]="nextedSubMenu[i+'.'+j+'.'+k]">
+                                    <span> <i *ngIf="nestedItem.hasChild.length>0"  class="fa fa-caret-right"></i> </span><span tabindex="0">{{nestedItem.name}}</span>
+                                </a>
+                                <ul class="collapse list-unstyled" id="{{nestedItem.title}}">
+                                    <li *ngFor="let item2 of nestedItem.hasChild;  let l=index" [ngClass]="{'active' : innerMostnextedSubMenu[i+'.'+j+'.'+k+'.'+l]}">
+                                        <a href="#{{item2.title}}" *ngIf="item2.roleAssignee.includes(user)" [ngClass]="{'activeColor' :item2.hasChild.length==0}" [id]="'menuLink'+i+'.'+j+'.'+k+'.'+l" (click)="navmenuclick(item2.route,item2, [i, j, k, l])" data-toggle="collapse" [attr.aria-expanded]="nextedSubMenu[i+'.'+j+'.'+k+ '.'+l]">
+                                            <span> <i *ngIf="item2.hasChild.length>0"  class="fa fa-caret-right"></i> </span><span tabindex="0">{{item2.name}}</span>
+                                        </a>
+                                        <ul class="collapse list-unstyled" id="{{item2.title}}">
+                                            <li *ngFor="let item3 of item2.hasChild;  let m=index" [ngClass]="{'active' : innerMostnextedSubMenu[i+'.'+j+'.'+k+'.'+l +'.'+m]}">
+                                                <a href="javascript:void(0);" *ngIf="item3.roleAssignee.includes(user)"  [ngClass]="{'activeColor' :item3.hasChild.length==0}" [id]="'menuLink'+i+'.'+j+'.'+k+'.'+l+'.'+m" (click)="navmenuclick(item3.route,item3, [i, j, k, l,m])">
+                                               {{item3.name}} 
+                                           </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>

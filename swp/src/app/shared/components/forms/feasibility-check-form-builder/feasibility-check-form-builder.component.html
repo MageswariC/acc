@@ -1,0 +1,85 @@
+<form [formGroup]="fcForm" (ngSubmit)="onSubmit()">
+    <div class="accordion accordion-width" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+            <ng-container *ngFor="let c of feasibilityCheck?.controls">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#'+c.id" aria-expanded="true" [attr.aria-controls]="c.id">
+                        {{c.heading}}
+                    </button>
+                </h2>
+                <div [id]="c.id" class="accordion-collapse collapse show" [attr.aria-labelledby]="c.id">
+                    <div class="accordion-body">
+                        <div class="container">
+
+                            <ng-container *ngFor="let child of c.options?.children">
+                                <div class="row mb-3">
+                                    <label class="col-4 col-form-label" [for]="child.key">{{ child.label }}<span
+                                            *ngIf="child?.required" class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-8">
+                                        <div class="row">
+                                            <div class="col-7">
+                                                <ng-container *ngIf="['text', 'password', 'date','email','number', 'file'].includes(child.type)">
+                                                    <input [type]="child.type" [attr.disabled]="child.readOnly === true? true:null" [value]="child.value" [ngClass]="{ 'is-invalid': checkErrors(fcForm, c.key, child.key)!==null }" [formControlName]="child.key" class="form-control" [id]="child.key">
+                                                </ng-container>
+
+                                                <ng-container *ngIf="['textarea'].includes(child.type)">
+                                                    <textarea type="text" class="form-control" [id]="child.key" [attr.disabled]="child.readOnly" [formControlName]="child.key">
+                                      </textarea>
+                                                </ng-container>
+                                                <ng-container *ngIf="['select'].includes(child.type)">
+                                                    <select (change)="child?.handler({component:parent,fgroup:c,fcontrol:child, event:$event})" [id]="child.key" [attr.disabled]="child.readOnly === true? true:null" class="form-select" [formControlName]="child.key" [ngClass]="{ 'is-invalid': checkErrors(fcForm, c.key, child.key)!==null }">
+                                                        <option [ngValue]="null">Select</option>
+                                                        <ng-container *ngIf="child.option.length">
+                                                            <option *ngFor="let item of child.option" [value]="item">
+                                                                {{item}}</option>
+                                                        </ng-container>
+                                                    </select>
+                                                </ng-container>
+                                                <div *ngIf="['radio'].includes(child.type)">
+                                                    <ng-container *ngFor="let opt of  child.option">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="radio" [id]="child.key+opt.value" class="form-check-input" [formControlName]="child.key" [value]="opt.value" [attr.disabled]="opt.disable === true? true:null" (change)="child?.handler({component:parent,option:opt,fgroup:c,fcontrol:child, event:$event})">
+                                                            <label [for]="child.key+opt.value" class="form-check-label">{{opt.value}}</label>
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                                <button *ngIf="['button'].includes(child.type)" [type]="child.type" [attr.disabled]="!fcForm.valid" class="btn btn-primary button-primary btn-sm">
+                                                    {{child.value}}
+                                                </button>
+                                            </div>
+                                            <div class="col-5 pt-2">
+                                                <div>
+                                                    <div *ngIf="checkErrors(fcForm, c.key, child.key)!==null" class="d-inline invalid-feedback">
+                                                        <div class="small-text">
+                                                            {{child.errorMsg[checkErrors(fcForm, c.key, child.key) || '']}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <div class="row mb-3">
+                                <div class="col-4">
+
+                                </div>
+                                <div class="col-8">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <button type="submit" class="btn btn-primary button-primary button-small" [disabled]="!fcForm.valid">Check Feasibility</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+        </div>
+    </div>
+</form>
+<!-- <app-modal (newConfirmationEvent)="ConfirmationEvent($event)" [modalBoxObj]="modalObj" #modal>
+</app-modal> -->

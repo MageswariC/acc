@@ -1,0 +1,110 @@
+@import 'variable.scss';
+.form-background {
+    background-color: var(--background-color) !important;
+    min-height: 600px;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.col-form-label {
+    font-size: 13px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.form-control {
+    padding: 5px !important;
+    font-size: 13px !important;
+}
+
+.form-select {
+    font-size: 13px !important;
+    padding: 5px !important;
+}
+
+.form-check-label {
+    padding-left: 0px !important;
+}
+
+.form-check-input {
+    width: 14px !important;
+    height: 14px !important;
+    background-position: initial !important;
+    background-size: initial !important;
+}
+
+.form-check-inline .form-check-label {
+    font-size: 14px !important;
+}
+
+.form-check .form-check-input {
+    margin-top: 5px !important;
+}
+
+.breadcrumbstyle {
+    font-size: 18px !important;
+}
+
+.width-12 {
+    width: 12% !important;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: var(--disable);
+}
+
+.form-select:disabled {
+    background-color: var(--disable);
+}
+
+.form-background {
+    background-color: var(--disable) !important;
+    min-height: 600px;
+}
+
+.invalid-feedback div {
+    font-size: 10px !important;
+}
+
+.input-width {
+    width: 55% !important;
+}
+
+.button-primary {
+    color: var(--white) !important;
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+     :hover {
+        color: var(--white) !important;
+        background-color: var(--primary) !important;
+        border-color: var(--primary) !important;
+    }
+}
+
+.button-small {
+    padding: 7px !important;
+    font-size: 13px !important;
+}
+
+.button-medium {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.action-btn {
+    background-color: var(--primary) !important;
+    border: 1px solid var(--primary) !important;
+    padding: 0.15rem 0.70rem !important;
+}
+
+.action-icon-size {
+    font-size: 12px !important;
+}
+
+.btn-gray {
+    background-color: var(--background-color);
+}

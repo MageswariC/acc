@@ -1,0 +1,7 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bcrumb mt-3">
+        <li class="breadcrumb-item" *ngFor="let name of braedcrumb">
+            <a [routerLink]="name.url">{{ name.label }}</a>
+        </li>
+    </ol>
+</nav>

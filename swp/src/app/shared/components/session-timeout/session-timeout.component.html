@@ -1,0 +1,40 @@
+<div class="backkdrop"></div>
+<div class="alert-box">
+    <div class="modal-header m-2">
+        <h5 class="modal-title" id="modal-basic-title">
+            Session Expire Warning!
+        </h5>
+    </div>
+    <hr class="w-100">
+    <div class="modal-body  m-2 p-2">
+        <ng-container *ngIf="!isTimeout">
+            <p>Your Session is about to expire due to inactivity.</p>
+            <p>You will be logged out in {{message}} seconds.</p>
+        </ng-container>
+        <ng-container *ngIf="isTimeout">
+            <p>Session has expired.</p>
+
+        </ng-container>
+    </div>
+    <hr class="w-100">
+    <div class="modal-footer  m-2 p-2">
+        <ng-container *ngIf="!isTimeout">
+            <button type="button" class="btn btn-secondary button-secondary" (click)="onLogout()">
+                Logout
+            </button>
+            <button type="button" class="btn btn-primary button-primary" (click)="onContinueSession()">
+                Continue
+            </button>
+
+        </ng-container>
+        <ng-container *ngIf="isTimeout">
+            <button type="button" class="btn btn-secondary button-primary" (click)="onLogout()">
+                Login
+            </button>
+
+        </ng-container>
+
+    </div>
+
+
+</div>

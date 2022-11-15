@@ -1,0 +1,11 @@
+<div class="center width-60 mb-3 mb-1 mt-4">
+    <div class="row">
+        <div class="col-md-{{item.colSize}} mb-4" *ngFor="let item of tilesLists">
+            <div (click)="navigateToComponent(item.route)" class="card" [ngClass]="item.img ? 'example-card-with-icon-large' : 'example-card-with-icon'" class="example-card-with-icon-large">
+                <img *ngIf="item.img" class="card-img-top layout" src="{{item.img}}">
+                <i *ngIf="item.icon" class="fa {{item.icon}}" aria-hidden="true"></i>
+                <div *ngIf="item.icon" class="card-body title-text">{{item.label}}</div>
+            </div>
+        </div>
+    </div>
+</div>

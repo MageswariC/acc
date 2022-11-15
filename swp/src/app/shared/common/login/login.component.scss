@@ -1,0 +1,48 @@
+.portalLogo {
+    background: url(../../../../assets/img/NetLinkTrustLogo.png) no-repeat 0 0;
+    background-size: 100%;
+    width: 55%;
+}
+
+.headerLogo{
+    display: block;
+    text-indent: -9999px;
+    background: url(../../../../assets/img/NetLinkLogo.png) no-repeat 0 0;
+    background-size: 100%;
+    position: absolute;
+    margin-top: 24px;
+    transform: translateY(-50%);
+    width: 200px;
+}
+
+.header-container {
+    height: 70px;
+}
+
+.layout {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient( rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(../../../../assets/img/bg-img-min.png) no-repeat;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: none!important;
+    height: 516px !important;
+}
+
+.card {
+    min-width: 22%;
+}
+
+.forgot-password-customization1 {
+    font-size: small;
+}
+
+.forgot-password-customization {
+    font-size: smaller;
+}

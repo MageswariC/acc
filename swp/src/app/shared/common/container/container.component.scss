@@ -1,0 +1,33 @@
+.menuConatiner {
+    position: fixed;
+    // z-index: 999;
+}
+
+.formContainer {
+    margin-left: 25%;
+    height: calc(100vh - 70px);
+    overflow-y: scroll;
+}
+
+
+/* scrollbar width */
+
+.formContainer::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+/* scrollbar track */
+
+.formContainer::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+
+/* scrollbar handle */
+
+.formContainer::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: #353935;
+    background-image: linear-gradient(to top, #353935 0%, #36454F 100%);
+}

@@ -1,0 +1,12 @@
+<!-- <p>time out </p>
+<p>first time</p>{{idleTimerLeft}}
+<p>second time</p>{{secondTimerLeft}} -->
+
+<router-outlet>
+</router-outlet>
+
+<app-loading-spinner *ngIf="showLoading$ |async"></app-loading-spinner>
+
+<app-modal (newConfirmationEvent)="ConfirmationEvent($event)" [modalBoxObj]="modalObj" #modal>
+</app-modal>
+<app-session-timeout [message]="message" *ngIf="showSessionPopup && message" (sessionLogout)="onSessionLogout()" (sessionContinue)="onContinueSession()"></app-session-timeout>

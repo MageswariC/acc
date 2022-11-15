@@ -1,0 +1,37 @@
+<ng-template #modal let-c="close" let-d="dismiss">
+    <div class="modal-header m-2">
+        <h5 class="modal-title" *ngIf="modalBoxObj.modalTitle!=''" id="modal-basic-title">{{modalBoxObj.modalTitle}}
+        </h5>
+        <button type="button" class="btn-close" aria-label="Close" *ngIf="modalBoxObj.timeoutPopup !='timeoutPopup'"
+            (click)="d('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <ng-container *ngIf="modalBoxObj.timeoutPopup">
+            <p>Your Session is about to expire due to inactivity.</p>
+            <p>You will be logged out in {{modalBoxObj.modalBodyData}} seconds.</p>
+        </ng-container>
+        <ng-container *ngIf="!modalBoxObj.timeoutPopup">
+            <p>{{modalBoxObj.modalBodyData}}</p>
+        </ng-container>
+
+
+        <div class="modal-footer">
+
+            <ng-container *ngIf="modalBoxObj.timeoutPopup !='timeoutPopup'">
+
+                <button type="button" class="btn btn-primary button-primary" (click)="c('Save click')">
+                    Ok
+                </button>
+            </ng-container>
+            <ng-container *ngIf="modalBoxObj.timeoutPopup =='timeoutPopup'">
+                <button type="button" class="btn btn-light button-small" (click)="d('Cross click')">
+                    Logout
+                </button>
+                <button type="button" class="btn btn-primary button-primary" (click)="c('Save click')">
+                    Continue Session
+                </button>
+            </ng-container>
+        </div>
+
+    </div>
+</ng-template>

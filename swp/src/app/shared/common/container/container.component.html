@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <!--Header-->
+    <div class="row">
+        <div class="col-12">
+            <app-header-component></app-header-component>
+        </div>
+    </div>
+    <!--Main content-->
+    <div class="row">
+        <div class="col-auto col-3 bg-dark p-0 menuConatiner">
+            <app-navbar-component></app-navbar-component>
+        </div>
+        <div class="col py-3 pt-0 formContainer">
+          
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <!--Footer-->
+    <div class="row ">
+        <div class="col-12 ">
+            <app-footer-component></app-footer-component>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<form [formGroup]="resiEndUserS1">
+    <div class="row mb-4">
+        <feasibility-check-form-builder (emitFcform)="fcFormValue($event)" [feasibilityCheck]="fcInput">
+        </feasibility-check-form-builder>
+    </div>
+    <div class="row mb-4" *ngIf="isFesibilityCheckClicked">
+        <form-builder (emitForm)="getForm($event)" (emitFormValue)="getFormVal($event)" [parent]="this" [formData]="formData" [sheduleModal]="shedule1Model"></form-builder>
+    </div>
+</form>

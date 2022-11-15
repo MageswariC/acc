@@ -1,0 +1,390 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="accordion accordion-width" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+            <ng-container *ngFor="let c of formData?.controls">
+                <ng-container *ngIf="c.visible">
+                    <div [ngSwitch]="c.type">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                [attr.data-bs-target]="'#'+c.id" aria-expanded="true" [attr.aria-controls]="c.id">
+                                {{c.heading}}
+                            </button>
+                        </h2>
+                        <div [id]="c.id" class="accordion-collapse collapse {{(c.hide)?'hide':'show'}}"
+                            [attr.aria-labelledby]="c.id">
+                            <div class="accordion-body">
+                                <div class="container p-0">
+                                    <div *ngSwitchCase="'group'" [formGroupName]="c.key">
+                                        <ng-container *ngFor="let child of c.options?.children">
+                                            <div class="row mb-2 pt-{{child.type=='formArray'? 2: ''}}"
+                                                *ngIf="child.visible"
+                                                [ngClass]="{ 'subControl': child.type=='formArray' }">
+                                                <label class="col-4 col-form-label" [for]="child.key">{{ child.label
+                                                    }}<span *ngIf="child?.required" class="text-danger">*</span>
+                                                </label>
+                                                <div class="col-8">
+                                                    <ng-container *ngIf="child.type!=='formArray'">
+                                                        <div class="row">
+                                                            <div class="col-7">
+                                                                <ng-container>
+                                                                    <input
+                                                                        (change)="child.handler({component:parent,option:child.option,fgroup:c,fcontrol:child, event:$event})"
+                                                                        (keyup)="child.handler({component:parent,option:child.option,fgroup:c,fcontrol:child, event:$event})"
+                                                                        *ngIf="['text', 'password','email','number','file'].includes(child.type)"
+                                                                        [type]="child.type"
+                                                                        [attr.disabled]="child.readOnly === true? true:null"
+                                                                        [value]="child.value"
+                                                                        [ngClass]="{ 'is-invalid': checkErrors(myForm, c.key, child.key)!==null }"
+                                                                        [formControlName]="child.key"
+                                                                        class="form-control" [id]="child.key">
+                                                                    
+
+                                                                    <ng-container
+                                                                        *ngIf="['textarea'].includes(child.type)">
+                                                                        <textarea type="text" class="form-control"
+                                                                            [id]="child.key"
+                                                                            [attr.disabled]="child.readOnly"
+                                                                            [formControlName]="child.key">
+                                                                    </textarea>
+                                                                    </ng-container>
+                                                                    <!-- <ng-container *ngIf="[ 'date'].includes(child.type)">
+                                                                        <div class="input-group dateContainer">
+                                                                            <input type="text" class="form-control" [bsConfig]="datepickerConfig" [daysDisabled]="[6,0]" [datesDisabled]="disabledDates" placement="right" bsDatepicker #d='bsDatepicker' [attr.disabled]="child.readOnly === true? true:null" (change)="child?.handler({component:parent,fgroup:c,fcontrol:child, event:$event})"
+                                                                               placeholder="mm/dd/yyyy" [value]="child.value" [ngClass]="{ 'is-invalid': checkErrors(myForm, c.key, child.key)!==null }" [formControlName]="child.key" class="form-control" [id]="child.key">
+                                                                            <span style = "border: 1px solid #ced4da;" class="btn btn-outline-secondary calendar fa fa-calendar" (click)="d.toggle()"></span>
+                                                                        </div>
+                                                                    </ng-container> -->
+                                                                    <div *ngIf="['checkbox'].includes(child.type)">
+
+                                                                        <ng-container *ngFor="let opt of  child.option">
+
+                                                                            <div class="form-check">
+
+                                                                                <input class="form-check-input"
+                                                                                    type="checkbox"
+                                                                                    [id]="child.key+opt.value"
+                                                                                    [formControlName]="child.key"
+                                                                                    [value]="opt.value"
+                                                                                    [attr.disabled]="opt.disable === true? true:null"
+                                                                                    (change)="child.handler({component:parent,option:opt,fgroup:c,fcontrol:child, event:$event})">
+
+                                                                                <label class="form-check-label"
+                                                                                    [for]="child.key+opt.value">{{opt.value}}</label>
+
+                                                                            </div>
+
+                                                                        </ng-container>
+
+                                                                    </div>
+                                                                    <!-- <ng-container *ngIf="['date1'].includes(child.type)">
+                                                                        <div class="input-group dateContainer">
+                                                                            <input class="form-control custumDate"
+                                                                                [markDisabled]="isDisabled" name="dp"
+                                                                                [formControlName]="child.key"
+                                                                                ngbDatepicker #d="ngbDatepicker"
+                                                                                [dayTemplate]="customDay"
+                                                                                (dateSelect)="onDateSelection($event)">
+                                                                            <button
+                                                                                class="btn btn-outline-secondary calendar fa fa-calendar"
+                                                                                [attr.disabled]="child.readOnly === true? true:null"
+                                                                                (click)="d.toggle()"
+                                                                                type="button"></button>
+                                                                        </div>
+                                                                    </ng-container>
+                                                                    <ng-template #customDay let-date
+                                                                        let-currentMonth="currentMonth"
+                                                                        let-selected="selected" let-disabled="disabled"
+                                                                        let-focused="focused">
+                                                                        <span class="custom-day"
+                                                                            [class.weekend]="isWeekend(date)"
+                                                                            [class.disable]="isDisabled(date)"
+                                                                            [class.focused]="focused"
+                                                                            [class.select]="selected"
+                                                                            [class.bg-primary]="selected"
+                                                                            [class.hidden]="date.month !== currentMonth"
+                                                                            [class.text-muted]="disabled">
+                                                                            {{ date.day }}
+                                                                        </span>
+                                                                    </ng-template> -->
+                                                                    <ng-container
+                                                                        *ngIf="['select'].includes(child.type)">
+                                                                        <select [id]="child.key"
+                                                                            [attr.disabled]="child.readOnly === true? true:null"
+                                                                            class="form-select"
+                                                                            [formControlName]="child.key"
+                                                                            [ngClass]="{ 'is-invalid': checkErrors(myForm, c.key, child.key)!==null }"
+                                                                            (change)="child.handler({component:parent,option:child.option,fgroup:c,fcontrol:child, event:$event, formData:formData.controls})">
+                                                                            <option [ngValue]="null">Select</option>
+                                                                            <ng-container *ngIf="child.option.length">
+                                                                                <option
+                                                                                    *ngFor="let item of child.option"
+                                                                                    [value]="item">{{item}}</option>
+                                                                            </ng-container>
+                                                                        </select>
+                                                                    </ng-container>
+                                                                    <div *ngIf="['radio'].includes(child.type)">
+                                                                        <ng-container *ngFor="let opt of  child.option">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input type="radio"
+                                                                                    [id]="child.key+opt.value"
+                                                                                    class="form-check-input"
+                                                                                    [formControlName]="child.key"
+                                                                                    [value]="opt.value"
+                                                                                    [attr.disabled]="opt.disable === true? true:null"
+                                                                                    (change)="child.handler({component:parent,option:opt,fgroup:c,fcontrol:child, event:$event})">
+                                                                                <label [for]="child.key+opt.value"
+                                                                                    class="form-check-label">{{opt.value}}</label>
+                                                                            </div>
+                                                                        </ng-container>
+                                                                    </div>
+                                                                    <button
+                                                                        (click)="child.handler({component:parent,option:child.option,fgroup:c,fcontrol:child, event:$event, formData:formData.controls})"
+                                                                        *ngIf="['button'].includes(child.type)"
+                                                                        [type]="child.type"
+                                                                        [attr.disabled]="child.readOnly === true? true:null"
+                                                                        class="btn btn-primary button-primary button-small mt-1">
+                                                                        {{child.value}}
+                                                                    </button>
+                                                                </ng-container>
+
+                                                            </div>
+                                                            <div class="col-5 pt-2">
+                                                                <div>
+                                                                    <div *ngIf="checkErrors(myForm, c.key, child.key)!==null"
+                                                                        class="d-inline invalid-feedback">
+                                                                        <div class="small-text">
+                                                                            {{child.errorMsg[checkErrors(myForm, c.key,
+                                                                            child.key) || '']}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="['formArray'].includes(child.type)">
+                                                        <div class="row aaa" [formArrayName]="child.key">
+                                                            <ng-container
+                                                                *ngFor="let groupControl of child?.subformControls; let i=index">
+                                                                <ng-container
+                                                                    *ngFor="let fg of getFormArray(child.key, c.key).controls; let j=index">
+                                                                    <ng-container [formGroupName]="j">
+                                                                        <div class="row pb-2"  *ngIf="groupControl?.visible">
+                                                                            <label class="col-2 col-form-label pr-0"
+                                                                                [for]="groupControl.key">{{
+                                                                                groupControl.label }}
+                                                                            </label>
+                                                                            <div class="col-5 pr-0">
+                                                                                <ng-container>
+                                                                                    <input
+                                                                                    (change)="child?.handler({component:parent,option:child.option,fgroup:c,fcontrol:child, event:$event})"
+                                                                                    *ngIf="['file'].includes(groupControl.type)"
+                                                                                    [type]="groupControl.type"
+                                                                                    class="form-control"
+                                                                                    [value]="groupControl.value"
+                                                                                    multiple
+                                                                                    [ngClass]="{ 'is-invalid': checksubcontrolErrors(myForm, c.key, child.key, groupControl.key)!==null }"
+                                                                                    [formControlName]="groupControl.key"> 
+                                                                                </ng-container>
+                                                                                <ng-container *ngIf="['text', 'password','email','number','file'].includes(groupControl.type)">
+                                                                                    <input
+                                                                                   
+                                                                                    (change)="child?.handler({component:parent,option:child.option,fgroup:c,fcontrol:child, event:$event})"
+                                                                                 
+                                                                                    [type]="groupControl.type"
+                                                                                    class="form-control"
+                                                                                    [attr.disabled]="groupControl.readOnly === true? true:null"
+                                                                                    [value]="groupControl.value"
+                                                                                    [ngClass]="{ 'is-invalid': checksubcontrolErrors(myForm, c.key, child.key, groupControl.key)!==null }"
+                                                                                    [formControlName]="groupControl.key">
+                                                                                </ng-container>
+                                                                                <ng-container
+                                                                                    *ngIf="['select'].includes(groupControl.type)">
+                                                                                    <select [id]="child.key"
+                                                                                        class="form-select"
+                                                                                        [attr.disabled]="groupControl.readOnly === true? true:null"
+                                                                                        [ngClass]="{ 'is-invalid': checksubcontrolErrors(myForm, c.key, child.key, groupControl.key)!==null }"
+                                                                                        [formControlName]="groupControl.key">
+                                                                                        <option [ngValue]="null">Select
+                                                                                        </option>
+                                                                                        <ng-container
+                                                                                            *ngIf="groupControl.option.length">
+                                                                                            <option
+                                                                                                *ngFor="let item of groupControl.option"
+                                                                                                [value]="item">{{item}}
+                                                                                            </option>
+                                                                                        </ng-container>
+                                                                                    </select>
+                                                                                </ng-container>
+                                                                                <ng-container
+                                                                                    *ngIf="['textarea'].includes(groupControl.type)">
+                                                                                    <textarea type="text"
+                                                                                        class="form-control"
+                                                                                        [id]="groupControl.key"
+                                                                                        [ngClass]="{ 'is-invalid': checksubcontrolErrors(myForm, c.key, child.key, groupControl.key)!==null }">
+                                               </textarea>
+                                                                                </ng-container>
+                                                                            </div>
+                                                                            <div class="col-4 ml-3">
+                                                                                <div *ngIf="checksubcontrolErrors(myForm, c.key, child.key, groupControl.key)!==null"
+                                                                                    class="d-inline invalid-feedback">
+                                                                                    <div class="small-text">
+                                                                                        {{groupControl.errorMsg[checksubcontrolErrors(myForm,
+                                                                                        c.key, child.key,
+                                                                                        groupControl.key) || '']}}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="['rack1212C'].includes(child.type)">
+                                                <div class="row mb-3 pt-0">
+                                                    <div class="col-10">
+                                                        <!-- <button type="button" (click)="addRacks()" class="btn btn-primary button-primary btn-sm">
+                                                        Add Racks <i class="fa fa-plus pl-1" aria-hidden="true"></i>
+                                                    </button> -->
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12 p-0">
+                                                        <!-- <app-nested-table [tableData]="child.data"></app-nested-table> -->
+                                                        <!-- <add-rack1212-c></add-rack1212-c> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="['rack12A12B'].includes(child.type)">
+
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <!-- <app-nested-table [tableData]="child.data"></app-nested-table> -->
+                                                        <!-- <app-add-rack12-a12-b></app-add-rack12-a12-b> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="['rack12A'].includes(child.type)">
+
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <!-- <app-nested-table [tableData]="child.data"></app-nested-table> -->
+                                                        <!-- <rack12-a></rack12-a> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="['colo-person-detail'].includes(child.type)">
+
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <!-- <app-files-display></app-files-display> -->
+                                                        <!-- <app-nested-table [tableData]="child.data"></app-nested-table> -->
+                                                        <!-- <rack12-a></rack12-a> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="['rack12B'].includes(child.type)">
+
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <!-- <app-nested-table [tableData]="child.data"></app-nested-table> -->
+                                                        <!-- <add-rack12-b></add-rack12-b> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="['colo-master-list'].includes(child.type)">
+
+                                                <div class="row mb-3 mr-0 pt-0">
+                                                    <div class="col-12">
+                                                        <!-- <app-nested-table [tableData]="child.data"></app-nested-table> -->
+                                                        <!-- <colo-master-list></colo-master-list> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="['colo-person-detail'].includes(child.type)">
+
+                                                <div class="row mb-3 mr-0 pt-0">
+                                                    <div class="col-12">
+                                                        <!-- <app-nested-table [tableData]="child.data"></app-nested-table> -->
+                                                        <!-- <colo-person-details></colo-person-details> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="['coloService'].includes(child.type)">
+
+                                                <div class="row mb-3 mr-0 pt-0">
+                                                    <div class="col-12">
+                                                        <!-- <app-nested-table [tableData]="child.data"></app-nested-table> -->
+                                                        <!-- <colo-service-details></colo-service-details> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div *ngIf="['table'].includes(child.type)">
+                                                <div class="row mb-3 mr-0 pt-0">
+                                                    <div *ngIf="child.action!='view'" class="col-12">
+                                                        <button type="button"
+                                                            (click)="openModalForAddData(child.templateName)"
+                                                            class="btn btn-primary button-primary button-small float-right">
+                                                            Add <i class="fa fa-plus pl-1" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                    <!-- <app-form-modal [action]="'Add'" [incidentType]="incidentType" [templateName]="modalBoxObj.templateName" (newConfirmationEvent)="ConfirmationEvent($event)" [modalSize]="modalBoxObj.modalSize" [modalTitle]="modalBoxObj.modalTitle" [modalBody]="modalBoxObj.modalBody" [modalButtonColor]="modalBoxObj.modalButtonColor"
+                                                    [tableHeader]="child.header" [tableData]="tableData1" [item]="item" [index]="index"  #formModal></app-form-modal> -->
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <!-- <div>
+                                                        <app-generic-table [incidentType]="incidentType"
+                                                            [tableData]="tableData1" [action]="child.action"
+                                                            [tableHeader]="child.header"
+                                                            [templateName]="child.templateName"></app-generic-table>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+
+                                            <div *ngIf="['dynamic-table'].includes(child.type)">
+                                                <div class="row mb-3 mr-0 pt-0">
+                                                    <div class="col-12">
+                                                        <button type="button"
+                                                            (click)="openModalForAddData(child.templateName)"
+                                                            class="btn btn-primary button-primary btn-sm float-right">
+                                                            Add <i class="fa fa-plus pl-1" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                    <!-- <app-form-modal [templateName]="modalBoxObj.templateName" (newConfirmationEvent)="ConfirmationEvent($event)" [modalSize]="modalBoxObj.modalSize" [modalTitle]="modalBoxObj.modalTitle" [modalBody]="modalBoxObj.modalBody" [modalButtonColor]="modalBoxObj.modalButtonColor"
+                                                    [tableHeader]="child.header" [tableData]="child.data"   [item]="item" [index]="index" [action]="child.action" #formModal></app-form-modal> -->
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <!-- <app-dynamic-table [tableColoumFormat]="tableColoumFormat"
+                                                            [tableRowData]="tableRowData"></app-dynamic-table> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <ng-container *ngIf="this.formData.controls[0].coloFesibiltyCheck || formData.controls[0]?.createOrder">
+        <div class="row mt-3 mb-3">
+            <div class="col-12 text-center">
+
+                <button type="button" (click)="openModalForCancel()"
+                    class="btn btn-secondary mr-2 width-12">Cancel</button>
+                <button type="submit" [disabled]="myForm.invalid"
+                    class="btn btn-primary button-primary  width-14">Submit Request</button>
+            </div>
+        </div>
+    </ng-container>
+</form>
+<!-- <app-form-modal [templateName]="modalBoxObj.templateName" (newConfirmationEvent)="ConfirmationEvent($event)" [modalSize]="modalBoxObj.modalSize" [modalTitle]="modalBoxObj.modalTitle" [modalBody]="modalBoxObj.modalBody" [modalButtonColor]="modalBoxObj.modalButtonColor"
+    #formModal></app-form-modal> -->

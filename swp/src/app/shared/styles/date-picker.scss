@@ -1,0 +1,67 @@
+.custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    border-radius: 0.25rem;
+    display: inline-block;
+    width: 2rem;
+}
+
+.custumDate {
+    pointer-events: none;
+}
+
+.custom-day:hover {
+    background-color: var(--background-color);
+}
+
+.custom-day.focused {
+    background-color: var(--primary);
+}
+.disable {
+    background-color: var(--background-color);
+    color: var(--white);
+    border-radius: 0;
+
+}
+.weekend {
+    background-color: var(--background-color);
+    border-radius: 1rem;
+    color: var(--white);
+    pointer-events: none;
+    display: block;
+    font-style: italic;
+}
+
+.select {
+    color: var(--white);
+}
+
+
+
+.hidden {
+    display: none;
+}
+
+::ng-deep {
+    .ngb-dp-weekday {
+        color: var(--primary) !important;
+        font-style: normal !important;
+    }
+
+    .btn-link {
+        color: var(--primary) !important;
+    }
+
+    .dateContainer .btn:focus {
+        box-shadow: none !important;
+    }
+
+    .dateContainer input,
+    .dateContainer button {
+        border: 1px solid var(--field-border);
+    }
+
+    .bg-primary {
+        color: var(--white) !important;
+    }
+}
